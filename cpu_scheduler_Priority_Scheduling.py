@@ -14,3 +14,21 @@ def input_processes():
             "priority": priority
         })
     return processes
+def priority_scheduling(processes):
+    processes.sort(key=lambda x: (x["arrival_time"], x["priority"]))  
+    current_time = 0
+    scheduled_processes = []
+    while processes:
+        ready_processes = [p for p in processes if p["arrival_time"] <= current_time]
+        if not ready_processes:
+            current_time += 1
+            continue
+        highest_priority_process = min(ready_processes, key=lambda x: x["priority"])
+        processes.remove(highest_priority_process)
+        highest_priority_process["start_time"] = current_time
+        highest_priority_process["end_time"] = current_time + highest_priority_process["burst_time"]
+        highest_priority_process["waiting_time"] = highest_priority_process["start_time"] - highest_priority_process["arrival_time"]
+        highest_priority_process["turnaround_time"] = highest_priority_process["end_time"] - highest_priority_process["arrival_time"]
+        current_time = highest_priority_process["end_time"]
+        scheduled_processes.append(highest_priority_process)
+    return scheduled_processes
