@@ -40,3 +40,19 @@ def fcfs(works):
         current_time = process["end_time"]
 
     return works
+def plot_gantt(works):
+    fig, ax = plt.subplots() 
+    for i, process in enumerate(works):
+        ax.barh(i, process["burst_time"], left=process["starttime"], height=0.5, label=f"P{process['Id']}")
+
+    
+    ax.set_xlabel("Time")
+    ax.set_ylabel("Processes")
+    ax.set_title("Gantt Chart (FCFS)")
+    ax.legend() 
+    plt.show() 
+
+
+works = input_proxy()
+scheduled_processes = fcfs(works)
+print("Scheduled Processes (FCFS):", scheduled_processes)
