@@ -18,3 +18,29 @@ def input_processes():
             "burst_time": burst_time
 
         })
+return processes
+
+def sjf(processes):
+
+    processes.sort(key=lambda x: (x["arrival_time"], x["burst_time"]))  
+
+    current_time = 0
+    scheduled_processes = []
+
+    while processes:
+
+        ready_processes = [p for p in processes if p["arrival_time"] <= current_time]
+        if not ready_processes:
+            current_time += 1
+            continue
+
+        shortest_process = min(ready_processes, key=lambda x: x["burst_time"])
+        processes.remove(shortest_process)
+        shortest_process["start_time"] = current_time
+        shortest_process["end_time"] = current_time + shortest_process["burst_time"]
+        shortest_process["waiting_time"] = shortest_process["start_time"] - shortest_process["arrival_time"]
+        shortest_process["turnaround_time"] = shortest_process["end_time"] - shortest_process["arrival_time"]
+        current_time = shortest_process["end_time"]
+        scheduled_processes.append(shortest_process)
+
+    return scheduled_processes
