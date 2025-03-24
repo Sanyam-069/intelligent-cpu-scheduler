@@ -44,3 +44,27 @@ def sjf(processes):
         scheduled_processes.append(shortest_process)
 
     return scheduled_processes
+def plot_gantt(processes):
+
+    fig, ax = plt.subplots()
+
+    for i, process in enumerate(processes):
+
+        ax.barh(i, process["burst_time"], left=process["start_time"], height=0.5, label=f"P{process['id']}")
+
+    ax.set_xlabel("Time")
+    ax.set_ylabel("Processes")
+    ax.set_title("Gantt Chart (SJF)")
+    ax.legend()
+    plt.show()
+
+if __name__ == "__main__":
+
+    processes = input_processes()
+    scheduled_processes = sjf(processes)
+    print("Scheduled Processes (SJF):")
+    for process in scheduled_processes:
+        print(f"Process {process['id']}: Start Time = {process['start_time']}, End Time = {process['end_time']}, "
+              f"Waiting Time = {process['waiting_time']}, Turnaround Time = {process['turnaround_time']}")
+
+    plot_gantt(scheduled_processes)
