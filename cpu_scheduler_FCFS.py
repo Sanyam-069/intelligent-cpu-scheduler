@@ -28,3 +28,15 @@ works = [
     {"Id": 2, "Arrivaltime": 1, "burst_time": 3, "starttime": 5},
     {"Id": 3, "Arrivaltime": 2, "burst_time": 8, "starttime": 8}
 ]
+def fcfs(works):
+    works.sort(key=lambda x: x["Arrivaltime"])
+
+    current_time = 0
+    for process in works:
+        process["starttime"] = max(current_time, process["Arrivaltime"])
+        process["end_time"] = process["starttime"] + process["burst_time"]
+        process["waiting_time"] = process["starttime"] - process["Arrivaltime"]
+        process["turnaround_time"] = process["end_time"] - process["Arrivaltime"]
+        current_time = process["end_time"]
+
+    return works
